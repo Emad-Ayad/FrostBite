@@ -99,7 +99,7 @@ struct HomeView: View {
             
             ForEach(Array(viewModel.forecastDays.enumerated()), id: \.element.id) { index, day in
                 NavigationLink {
-                    // ForecastDetailView(day: day)
+                     DetailsView(day: day)
                 } label: {
                     HStack {
                         Text(viewModel.titleForDay(day, index: index))
