@@ -30,13 +30,22 @@ final class HomeViewModel: ObservableObject {
         isLoading = false
     }
     
-    func titleForDay(at index: Int) -> String {
-        switch index {
-        case 0: return "Today"
-        case 1: return "Tomorrow"
-        case 2: return "After Tomorrow"
-        default: return ""
+    func titleForDay(_ day: ForecastDayDTO, index: Int) -> String {
+        if index == 0 {
+            return "Today"
         }
+        
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "EEE"
+        
+        guard let date = inputFormatter.date(from: day.date) else {
+            return day.date
+        }
+        
+        return outputFormatter.string(from: date)
     }
 }
 

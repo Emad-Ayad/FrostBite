@@ -11,9 +11,7 @@ import SwiftUI
 struct FrostBiteApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                Text("FrostBite")
-            }
+            HomeView()
         }
     }
 }

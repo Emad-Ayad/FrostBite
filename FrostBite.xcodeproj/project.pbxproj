@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6DEBDA142FCF03D100409C23 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6DEBDA132FCF03D100409C23 /* Alamofire */; };
-		6DEBDA162FCF03D100409C23 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 6DEBDA152FCF03D100409C23 /* AlamofireDynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +28,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DEBDA142FCF03D100409C23 /* Alamofire in Frameworks */,
-				6DEBDA162FCF03D100409C23 /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +71,6 @@
 			name = FrostBite;
 			packageProductDependencies = (
 				6DEBDA132FCF03D100409C23 /* Alamofire */,
-				6DEBDA152FCF03D100409C23 /* AlamofireDynamic */,
 			);
 			productName = FrostBite;
 			productReference = 6DD66CE92FCC94F80098CC45 /* FrostBite.app */;
@@ -357,11 +354,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6DEBDA122FCF03D100409C23 /* XCRemoteSwiftPackageReference "alamofire" */;
 			productName = Alamofire;
-		};
-		6DEBDA152FCF03D100409C23 /* AlamofireDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6DEBDA122FCF03D100409C23 /* XCRemoteSwiftPackageReference "alamofire" */;
-			productName = AlamofireDynamic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
