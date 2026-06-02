@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6DEBDA142FCF03D100409C23 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 6DEBDA132FCF03D100409C23 /* Alamofire */; };
+		6DEBDA162FCF03D100409C23 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 6DEBDA152FCF03D100409C23 /* AlamofireDynamic */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		6DD66CE92FCC94F80098CC45 /* FrostBite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrostBite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DEBDA142FCF03D100409C23 /* Alamofire in Frameworks */,
+				6DEBDA162FCF03D100409C23 /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,8 @@
 			);
 			name = FrostBite;
 			packageProductDependencies = (
+				6DEBDA132FCF03D100409C23 /* Alamofire */,
+				6DEBDA152FCF03D100409C23 /* AlamofireDynamic */,
 			);
 			productName = FrostBite;
 			productReference = 6DD66CE92FCC94F80098CC45 /* FrostBite.app */;
@@ -94,6 +103,9 @@
 			);
 			mainGroup = 6DD66CE02FCC94F80098CC45;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6DEBDA122FCF03D100409C23 /* XCRemoteSwiftPackageReference "alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6DD66CEA2FCC94F80098CC45 /* Products */;
 			projectDirPath = "";
@@ -328,6 +340,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6DEBDA122FCF03D100409C23 /* XCRemoteSwiftPackageReference "alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alamofire/alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.12.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6DEBDA132FCF03D100409C23 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DEBDA122FCF03D100409C23 /* XCRemoteSwiftPackageReference "alamofire" */;
+			productName = Alamofire;
+		};
+		6DEBDA152FCF03D100409C23 /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DEBDA122FCF03D100409C23 /* XCRemoteSwiftPackageReference "alamofire" */;
+			productName = AlamofireDynamic;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6DD66CE12FCC94F80098CC45 /* Project object */;
 }
