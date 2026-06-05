@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct FrostBiteApp: App {
@@ -13,5 +14,6 @@ struct FrostBiteApp: App {
         WindowGroup {
             HomeView()
         }
+        .modelContainer(for: SavedLocation.self)
     }
 }
