@@ -53,18 +53,23 @@ struct SearchView: View {
                 }
                 
                 if viewModel.isLoading {
+                    
                     Spacer()
                     ProgressView("Searching...")
                         .tint(ThemeHelper.textColor)
                         .foregroundColor(ThemeHelper.textColor)
                     Spacer()
+                    
                 } else if !viewModel.errorMessage.isEmpty {
+                    
                     Spacer()
                     Text(viewModel.errorMessage)
                         .foregroundColor(ThemeHelper.textColor)
                         .multilineTextAlignment(.center)
                     Spacer()
+                    
                 } else if let result = viewModel.result {
+                    
                     VStack(spacing: 12) {
                         Text(result.location.name)
                             .font(.largeTitle.bold())
@@ -98,6 +103,7 @@ struct SearchView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 18))
                     
                     Spacer()
+                    
                 } else {
                     Spacer()
                     Text("Enter a city name to get weather")

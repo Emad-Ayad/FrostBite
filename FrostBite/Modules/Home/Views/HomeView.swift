@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeView: View {
     
     @StateObject private var viewModel = HomeViewModel()
+    @State private var selectedCity = "Cairo"
+    @State private var showSearch = false
     
     var body: some View {
         NavigationStack {
@@ -26,7 +28,26 @@ struct HomeView: View {
             }
             .task {
                 if viewModel.weather == nil {
-                    await viewModel.loadWeather()
+                    await viewModel.loadWeather(for: selectedCity)
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showSearch = true
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                    }
+                }
+            }.sheet(isPresented: $showSearch) {
+                NavigationStack {
+                    SearchView { city in
+                        selectedCity = city
+                        
+                        Task {
+                            await viewModel.loadWeather(for: city)
+                        }
+                    }
                 }
             }
         }
@@ -99,7 +120,7 @@ struct HomeView: View {
             
             ForEach(Array(viewModel.forecastDays.enumerated()), id: \.element.id) { index, day in
                 NavigationLink {
-                     DetailsView(day: day)
+                    DetailsView(day: day)
                 } label: {
                     HStack {
                         Text(viewModel.titleForDay(day, index: index))
