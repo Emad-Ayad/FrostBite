@@ -16,6 +16,8 @@ final class SearchViewModel: ObservableObject {
     @Published var result: WeatherResponse?
     @Published var isLoading = false
     @Published var errorMessage = ""
+    @Published var suggestions: [SearchResultDTO] = []
+    private var suggestionTask: Task<Void, Never>?
     
     private let service = WeatherService()
     
@@ -52,4 +54,19 @@ final class SearchViewModel: ObservableObject {
         try? context.save()
     }
     
+    func fetchSuggestions() async {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard query.count >= 2 else {
+            suggestions = []
+            result = nil
+            return
+        }
+
+        suggestionTask?.cancel()
+        suggestionTask = Task {
+            try? await Task.sleep(for: .milliseconds(300))  
+            guard !Task.isCancelled else { return }
+            suggestions = (try? await service.searchCities(for: query)) ?? []
+        }
+    }
 }

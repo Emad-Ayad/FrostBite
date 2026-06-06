@@ -16,6 +16,8 @@ struct FavouritesView: View {
     @Binding var selectedCity: String
     @Binding var selectedTab: Int
     
+    @State private var locationToDelete: SavedLocation?
+    
     var body: some View {
         ZStack {
             Image(ThemeHelper.backgroundImageName)
@@ -42,20 +44,45 @@ struct FavouritesView: View {
                             .padding(.horizontal)
                     }
                 } else {
-                    ScrollView {
-                        VStack(spacing: 48) {
-                            ForEach(viewModel.favourites) { location in
-                                Button {
+                    List {
+                        ForEach(viewModel.favourites) { location in
+                            favouriteCard(for: location)
+                                .onTapGesture {
                                     selectedCity = location.name
                                     selectedTab = 0
-                                } label: {
-                                    favouriteCard(for: location)
                                 }
-                                .buttonStyle(.plain)
                                 .task { await viewModel.loadWeather(for: location) }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                    Button() {
+                                        locationToDelete = location
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }.tint(.red)
+                                }
+                                .listRowBackground(Color.clear)
+                                .listRowSeparator(.hidden)
+                                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                        }
+                    }
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
+                    .alert("Remove Favourite", isPresented: .init(
+                        get: { locationToDelete != nil },
+                        set: { if !$0 { locationToDelete = nil } }
+                    )) {
+                        Button("Delete", role: .destructive) {
+                            if let loc = locationToDelete {
+                                viewModel.remove(loc, context: context)
+                                locationToDelete = nil
                             }
                         }
-                        .padding()
+                        Button("Cancel", role: .cancel) {
+                            locationToDelete = nil
+                        }
+                    } message: {
+                        if let loc = locationToDelete {
+                            Text("Are you sure you want to remove \(loc.name) from favourites?")
+                        }
                     }
                 }
             }
@@ -102,14 +129,6 @@ struct FavouritesView: View {
                         .font(.title2.bold())
                         .foregroundColor(ThemeHelper.textColor)
                 }
-            }
-            
-            Button {
-                viewModel.remove(location, context: context)
-            } label: {
-                Image(systemName: "star.fill")
-                    .foregroundColor(.yellow)
-                    .font(.title3)
             }
         }
         .padding()

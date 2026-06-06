@@ -80,3 +80,10 @@ struct ConditionDTO: Codable {
     let text: String
     let icon: String
 }
+
+struct SearchResultDTO: Codable, Identifiable {
+    var id: Int
+    let name: String
+    let region: String
+    let country: String
+}

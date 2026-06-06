@@ -38,6 +38,8 @@ struct SearchView: View {
                             Task {
                                 await viewModel.search()
                             }
+                        }.onChange(of: viewModel.searchText) {
+                            Task { await viewModel.fetchSuggestions() }
                         }
                     
                     Button("Go") {
@@ -50,6 +52,44 @@ struct SearchView: View {
                     .background(.ultraThinMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 14))
                     .foregroundColor(ThemeHelper.textColor)
+                }
+                
+                if !viewModel.suggestions.isEmpty {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.suggestions) { suggestion in
+                            Button {
+                                viewModel.searchText = suggestion.name
+                                viewModel.suggestions = []
+                                Task { await viewModel.search() }
+                            } label: {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(suggestion.name)
+                                            .font(.headline)
+                                            .foregroundColor(ThemeHelper.textColor)
+                                        Text("\(suggestion.region), \(suggestion.country)")
+                                            .font(.caption)
+                                            .foregroundColor(ThemeHelper.textColor.opacity(0.7))
+                                    }
+                                    Spacer()
+                                    Image(systemName: "arrow.up.left")
+                                        .foregroundColor(ThemeHelper.textColor.opacity(0.5))
+                                        .font(.caption)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 10)
+                            }
+
+                            if suggestion.id != viewModel.suggestions.last?.id {
+                                Divider()
+                                    .background(ThemeHelper.textColor.opacity(0.3))
+                                    .padding(.horizontal, 16)
+                            }
+                        }
+                    }
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .animation(.none, value: viewModel.suggestions.count) 
                 }
                 
                 if viewModel.isLoading {
@@ -109,8 +149,6 @@ struct SearchView: View {
                                     .clipShape(Circle())
                             }
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
                         .background(.ultraThinMaterial)
                         .clipShape(Capsule())
                         .foregroundColor(ThemeHelper.textColor)
@@ -128,7 +166,7 @@ struct SearchView: View {
                     Spacer()
                 }
             }
-            .padding()
+            .padding(32)
         }
     }
 }

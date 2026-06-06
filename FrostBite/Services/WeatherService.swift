@@ -29,4 +29,21 @@ final class WeatherService {
         
         return try JSONDecoder().decode(WeatherResponse.self, from: data)
     }
+    
+    func searchCities(for query: String) async throws -> [SearchResultDTO] {
+        let parameters: Parameters = [
+            "key": apiKey,
+            "q": query
+        ]
+
+        let data = try await AF.request("https://api.weatherapi.com/v1/search.json",
+                                         method: .get,
+                                         parameters: parameters)
+            .validate()
+            .serializingData()
+            .value
+
+        return try JSONDecoder().decode([SearchResultDTO].self, from: data)
+    }
+    
 }
