@@ -12,7 +12,7 @@ import SwiftData
 struct FrostBiteApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SplashView()
         }
         .modelContainer(for: SavedLocation.self)
     }
