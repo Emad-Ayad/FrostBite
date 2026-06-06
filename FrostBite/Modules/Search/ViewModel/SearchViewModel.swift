@@ -36,4 +36,20 @@ final class SearchViewModel: ObservableObject {
         
         isLoading = false
     }
+    
+    func saveToFavourites(context: ModelContext, result: WeatherResponse) {
+        let loc = result.location
+        let saved = SavedLocation(
+            query: loc.name,
+            name: loc.name,
+            region: loc.region,
+            country: loc.country,
+            lat: loc.lat,
+            lon: loc.lon,
+            isFavorite: true
+        )
+        context.insert(saved)
+        try? context.save()
+    }
+    
 }

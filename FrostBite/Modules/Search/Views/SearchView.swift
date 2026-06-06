@@ -8,11 +8,10 @@
 import SwiftUI
 import SwiftData
 
-import SwiftUI
-
 struct SearchView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var context
     @StateObject private var viewModel = SearchViewModel()
     
     let onSelectCity: (String) -> Void
@@ -28,6 +27,7 @@ struct SearchView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 16) {
+                Spacer().frame(height: 30)
                 HStack {
                     TextField("Search city...", text: $viewModel.searchText)
                         .padding()
@@ -88,9 +88,26 @@ struct SearchView: View {
                         RemoteImageView(url: URL(string: "https:\(result.current.condition.icon)"))
                             .frame(width: 64, height: 64)
                         
-                        Button("Open This City") {
-                            onSelectCity(result.location.name)
-                            dismiss()
+                        HStack(spacing: 12) {
+                            Button("Open This City") {
+                                onSelectCity(result.location.name)
+                                dismiss()
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 10)
+                            .background(.ultraThinMaterial)
+                            .clipShape(Capsule())
+                            .foregroundColor(ThemeHelper.textColor)
+
+                            Button {
+                                viewModel.saveToFavourites(context: context, result: result)
+                            } label: {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.yellow)
+                                    .padding(10)
+                                    .background(.ultraThinMaterial)
+                                    .clipShape(Circle())
+                            }
                         }
                         .padding(.horizontal, 20)
                         .padding(.vertical, 10)
@@ -113,7 +130,5 @@ struct SearchView: View {
             }
             .padding()
         }
-        .navigationTitle("Search")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
