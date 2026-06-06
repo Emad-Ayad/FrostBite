@@ -9,20 +9,23 @@ import SwiftUI
 import SwiftData
 
 struct FavouritesView: View {
-
+    
     @Environment(\.modelContext) private var context
     @StateObject private var viewModel = FavouritesViewModel()
-
+    
+    @Binding var selectedCity: String
+    @Binding var selectedTab: Int
+    
     var body: some View {
         ZStack {
             Image(ThemeHelper.backgroundImageName)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-
+            
             Color.black.opacity(ThemeHelper.isMorning ? 0.10 : 0.25)
                 .ignoresSafeArea()
-
+            
             Group {
                 if viewModel.favourites.isEmpty {
                     VStack(spacing: 12) {
@@ -41,10 +44,15 @@ struct FavouritesView: View {
                 } else {
                     ScrollView {
                         VStack(spacing: 48) {
-                            Spacer().frame(height: 20)
                             ForEach(viewModel.favourites) { location in
-                                favouriteCard(for: location)
-                                    .task { await viewModel.loadWeather(for: location) }
+                                Button {
+                                    selectedCity = location.name
+                                    selectedTab = 0
+                                } label: {
+                                    favouriteCard(for: location)
+                                }
+                                .buttonStyle(.plain)
+                                .task { await viewModel.loadWeather(for: location) }
                             }
                         }
                         .padding()
@@ -56,31 +64,31 @@ struct FavouritesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { viewModel.loadAll(from: context) }
     }
-
+    
     @ViewBuilder
     private func favouriteCard(for location: SavedLocation) -> some View {
         let weather = viewModel.weatherMap[location.query]
         let isLoading = viewModel.loadingSet.contains(location.query)
-
+        
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(location.name)
                     .font(.headline)
                     .foregroundColor(ThemeHelper.textColor)
-
+                
                 Text("\(location.region), \(location.country)")
                     .font(.caption)
                     .foregroundColor(ThemeHelper.textColor.opacity(0.7))
-
+                
                 if let condition = weather?.current.condition.text {
                     Text(condition)
                         .font(.caption2)
                         .foregroundColor(ThemeHelper.textColor.opacity(0.7))
                 }
             }
-
+            
             Spacer()
-
+            
             if isLoading {
                 ProgressView()
                     .tint(ThemeHelper.textColor)
@@ -95,7 +103,7 @@ struct FavouritesView: View {
                         .foregroundColor(ThemeHelper.textColor)
                 }
             }
-
+            
             Button {
                 viewModel.remove(location, context: context)
             } label: {

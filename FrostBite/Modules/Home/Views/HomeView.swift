@@ -10,7 +10,8 @@ import SwiftUI
 struct HomeView: View {
     
     @StateObject private var viewModel = HomeViewModel()
-    @State private var selectedCity = "Cairo"
+    @Binding var selectedCity: String
+    @Binding var selectedTab: Int
     @State private var showSearch = false
     
     var body: some View {
@@ -49,6 +50,8 @@ struct HomeView: View {
                         }
                     }
                 }
+            }.onChange(of: selectedCity) { _, newCity in
+                Task { await viewModel.loadWeather(for: newCity) }
             }
         }
     }
