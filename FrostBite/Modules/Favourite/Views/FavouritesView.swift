@@ -52,7 +52,7 @@ struct FavouritesView: View {
                                     selectedTab = 0
                                 }
                                 .task { await viewModel.loadWeather(for: location) }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                     Button() {
                                         locationToDelete = location
                                     } label: {
@@ -64,6 +64,7 @@ struct FavouritesView: View {
                                 .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                         }
                     }
+                    .padding(.top, 48)
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
                     .alert("Remove Favourite", isPresented: .init(
